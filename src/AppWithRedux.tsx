@@ -20,7 +20,7 @@ export type TasksType = {
     isDone: boolean
 }
 
-function App() {
+function AppWithRedux() {
 
     let todoListId1 = v1();
     let todoListId2 = v1();
@@ -40,7 +40,7 @@ function App() {
             {taskId: v1(), title: 'angular', isDone: false},
             {taskId: v1(), title: 'nodeJS', isDone: false},
         ],
-        [todoListId1]: [
+        [todoListId2]: [
             {taskId: v1(), title: 'milk', isDone: false},
             {taskId: v1(), title: 'honey', isDone: true},
             {taskId: v1(), title: 'bread', isDone: false},
@@ -139,7 +139,7 @@ function App() {
     )
 };
 
-export default App;
+export default AppWithRedux;
 
 
 
