@@ -93,7 +93,6 @@ export const tasksReducer = (state = initialState, action: ActionsType): TasksSt
             return stateCopy;
         }
         case 'ADD-TODOLIST': {
-            debugger
             const stateCopy = {...state};
             // создаем пустой массив тасок для туду листа с id = action.id
             stateCopy[action.todoListId] = [];
