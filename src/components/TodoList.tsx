@@ -8,16 +8,14 @@ type TodoListPropsType = {
     title: string
     filter: string
     tasks: Array<TasksType>
-    removeTask: (taskId: string, todoListId: string) => void
-    changeFilter: (newFilterValue: FilterValuesType, todoListId: string) => void
-    addTask: (newTitle: string, todoListId: string) => void
-    changeStatus: (taskId: string, isDone: boolean, todoListId: string) => void
     removeToDoList: (todoListId: string) => void
-    ChangeTask: (title: string, taskId: string, todoListId: string) => void
-    ChangeTitle: (title: string, todoListId: string) => void
-
+    changeTitleTodolist: (todoListId: string, title: string) => void
+    changeFilterTodolist: (todoListId: string, newFilterValue: FilterValuesType) => void
+    addTask: (todoListId: string, newTitle: string) => void
+    removeTask: (todoListId: string, taskId: string) => void
+    changeTaskTitle: (todoListId: string, taskId: string, title: string) => void
+    changeTaskStatus: (todoListId: string, taskId: string, isDone: boolean) => void
 }
-// add .trim() func
 
 function TodoList(props: TodoListPropsType) {
 
@@ -25,22 +23,22 @@ function TodoList(props: TodoListPropsType) {
         <li key={t.taskId} className={t.isDone ? 'is-done' : ''}>
             <input type="checkbox" checked={t.isDone}
                    onChange={(e) => {
-                       props.changeStatus(t.taskId, e.currentTarget.checked, props.todoListId)
+                       props.changeTaskStatus(props.todoListId, t.taskId, e.currentTarget.checked)
                    }}/>
             <div>
                 <EditableSpan title={t.title}
                               onChangeTask={(title) => {
-                                  props.ChangeTask(title, t.taskId, props.todoListId)
+                                  props.changeTaskTitle(title, t.taskId, props.todoListId)
                               }}/>
             </div>
             <button onClick={() => {
-                props.removeTask(t.taskId, props.todoListId)
+                props.removeTask(props.todoListId, t.taskId)
             }}>delete
             </button>
         </li>)
 
     const addItem = (title: string) => {
-        props.addTask(title, props.todoListId)
+        props.addTask(props.todoListId, title)
     }
 
     return (
@@ -50,7 +48,7 @@ function TodoList(props: TodoListPropsType) {
                     <div className='h3'>
                         <EditableSpan title={props.title}
                                       onChangeTask={(title) => {
-                                          props.ChangeTitle(title, props.todoListId)
+                                          props.changeTitleTodolist(title, props.todoListId)
                                       }}/>
                     </div>
                     <button onClick={() => {
@@ -68,19 +66,19 @@ function TodoList(props: TodoListPropsType) {
                     <button
                         className={props.filter === 'all' ? 'active-filter' : ''}
                         onClick={() => {
-                            props.changeFilter('all', props.todoListId)
+                            props.changeFilterTodolist(props.todoListId, 'all')
                         }}>All
                     </button>
                     <button
                         className={props.filter === 'active' ? 'active-filter' : ''}
                         onClick={() => {
-                            props.changeFilter('active', props.todoListId)
+                            props.changeFilterTodolist(props.todoListId, 'active')
                         }}>Active
                     </button>
                     <button
                         className={props.filter === 'completed' ? 'active-filter' : ''}
                         onClick={() => {
-                            props.changeFilter('completed', props.todoListId)
+                            props.changeFilterTodolist(props.todoListId, 'completed')
                         }}>Completed
                     </button>
                 </div>

@@ -1,3 +1,4 @@
+/*
 import React, {useState} from 'react';
 import {v1} from 'uuid';
 import './App.css';
@@ -138,11 +139,4 @@ function App() {
         </div>
     )
 };
-
-export default App;
-
-
-
-
-
-
+*/
