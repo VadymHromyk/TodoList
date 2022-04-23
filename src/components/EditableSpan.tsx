@@ -1,19 +1,23 @@
-import React, {useState} from 'react';
-import css from './EditableSpan.module.css'
+import { TextField } from '@material-ui/core';
+import React, { useState } from 'react';
 
-type PropsType = {
+export type EditableSpanPropsType = {
     title: string
     onChangeTask: (title: string) => void
+    disabled: boolean
 }
 
-const EditableSpan = (props: PropsType) => {
+export const EditableSpan = React.memo((props: EditableSpanPropsType) => {
 
     const [edit, setEdit] = useState(false)
-    const [title, setTitle] = useState (props.title)
+    const [title, setTitle] = useState(props.title)
 
+    // if disabled === true, editable mode is blocked
     const activateEditMode = () => {
-        setEdit(true)
-        setTitle(props.title)
+        if (!props.disabled) {
+            setEdit(true)
+            setTitle(props.title)
+        }
     }
 
     const activateViewMode = () => {
@@ -23,12 +27,14 @@ const EditableSpan = (props: PropsType) => {
 
     return edit
         ?
-        <input value={title}
-               onChange={(e) => {setTitle(e.currentTarget.value)}}
-               onBlur={activateViewMode}
+        <TextField
+            variant={'outlined'}
+            label={'Enter a text'}
+            value={title}
+            onChange={(e) => { setTitle(e.currentTarget.value) }}
+            onBlur={activateViewMode}
         />
         :
-        <span onDoubleClick={ () => {activateEditMode()} } >{title}</span>
-};
+        <span onDoubleClick={() => { activateEditMode() }} >{title}</span>
+});
 
-export default EditableSpan;

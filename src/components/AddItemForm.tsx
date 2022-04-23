@@ -1,16 +1,23 @@
-import React, {useState, KeyboardEvent} from 'react';
+import { Button, TextField } from '@material-ui/core';
+import { AddOutlined } from '@material-ui/icons';
+import React, { useState, KeyboardEvent, ChangeEvent } from 'react';
 
-type PropsType = {
+export type AddItemFormPropsType = {
     addItem: (title: string) => void
+    disabled: boolean
 }
 
-function AddItemForm (props: PropsType) {
+export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
 
     const [title, setTitle] = useState<string>('');
-    const [error, setError] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>('');
 
-    const onKeyPressAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyPressAddItem = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') addItem()
+    }
+    const onChangeAddItem = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value);
+        setError('')
     }
 
     const addItem = () => {
@@ -18,29 +25,33 @@ function AddItemForm (props: PropsType) {
         if (trimmedTitle) {
             props.addItem(trimmedTitle)
         } else {
-            setError(true)
+            setError('Title id required')
         }
         setTitle('')
     }
 
     return (
         <div>
-            <input
+            <TextField
+                variant={'outlined'}
+                label={'Enter a text'}
                 value={title}
-                onChange={(e) => {
-                    setTitle(e.currentTarget.value);
-                    setError(false)
-                }}
-                onKeyPress={onKeyPressAddTask}
-                className={error ? 'error' : ''}
-                onBlur={() => {
-                    setError(false)
-                }}
+                onChange={onChangeAddItem}
+                onKeyPress={onKeyPressAddItem}
+                error={!!error}
+                helperText={error}
+                disabled={props.disabled}
             />
-            <button onClick={addItem}>+</button>
-            {error && <div className={'error-message'}>{'Title id required'}</div>}
+            <Button
+                onClick={addItem}
+                disabled={props.disabled}
+                variant={'contained'}
+                color={'primary'}
+            >
+                <AddOutlined />
+            </Button>
+            {/* {error && <div className={'error-message'}>{'Title id required'}</div>} */}
         </div>
     );
-};
-
-export default AddItemForm;
+}
+)
